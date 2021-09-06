@@ -14,7 +14,10 @@ $ docker pull nvcr.io/nvidia/tensorrt:<xx.yy>-py3
 git clone https://github.com/wang-xinyu/tensorrtx.git
 docker run --gpus all -it --rm -v$(pwd)/tensorrtx:/tensorrtx nvcr.io/nvidia/tensorrt:<xx.yy>-py3
 ```
-进入容器后，参照tensorrtx的readme.md生成对应的`engine`以及`libmyplugin.so`。
+进入容器后，参照tensorrtx的readme.md生成对应的`engine`以及`libmyplugin.so`（建议先安装opencv）。
+```
+apt-get install libopencv-dev
+```
 ## 部署到Triton Inference Server
 ```
 mkdir -p model_repository/<你模型的名字>/1
