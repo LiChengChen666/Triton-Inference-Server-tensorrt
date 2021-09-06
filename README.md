@@ -19,11 +19,11 @@ docker run --gpus all -it --rm -v$(pwd)/tensorrtx:/tensorrtx nvcr.io/nvidia/tens
 ```
 mkdir -p model_repository/<你模型的名字>/1
 mkdir model_repository/plugins
-#把生成的engine和libmtplugin.so拷贝到储存库下面。
+#把生成的engine和libmyplugin.so拷贝到储存库下面。
 cp <名字>.engine model_repository/<你模型的名字>/1/model.plan
 cp libmyplugin.so model_repository/plugins
 ```
 然后运行tritonserver
 ```
-docker run --gpus all --rm --shm-size=1g --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -p8000:8000 -p8001:8001 -p8002:8002 -v$(pwd)/model_repository:/models -v$(pwd)/model_repository/plugins:/plugins --env LD_PRELOAD=/plugins/liblayerplugin.so nvcr.io/nvidia/tritonserver:<xx.yy>-py3 tritonserver --model-repository=/models --strict-model-config=false --grpc-infer-allocation-pool-size=16 --log-verbose 1
+docker run --gpus all --rm --shm-size=1g --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -p8000:8000 -p8001:8001 -p8002:8002 -v$(pwd)/model_repository:/models -v$(pwd)/model_repository/plugins:/plugins --env LD_PRELOAD=/plugins/libmyplugin.so nvcr.io/nvidia/tritonserver:<xx.yy>-py3 tritonserver --model-repository=/models --strict-model-config=false --grpc-infer-allocation-pool-size=16 --log-verbose 1
 ```
