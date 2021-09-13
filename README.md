@@ -35,4 +35,8 @@ docker run --gpus all --rm --shm-size=1g --ipc=host --ulimit memlock=-1 --ulimit
 ```
 git clone https://github.com/LiChengChen666/Triton-Inference-Server-tensorrt.git
 docker run -it -v<项目路径>/yolov5-triton-tensorrt:/yolov5 --net=host nvcr.io/nvidia/tritonserver:21.08-py3-sdk /bin/bash
+cd yolov5/clients/c++/
+mkdir build
+cd build
+cmake ..
 ```
