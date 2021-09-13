@@ -1,0 +1,5 @@
+/yolov5/clients/c++/build/CMakeFiles/rebuild_cache.dir
+/yolov5/clients/c++/build/CMakeFiles/edit_cache.dir
+/yolov5/clients/c++/build/CMakeFiles/triton-cpp-client.dir
+/yolov5/clients/c++/build/CMakeFiles/c_clientSDK.dir
+/yolov5/clients/c++/build/CMakeFiles/clientSDK.dir
