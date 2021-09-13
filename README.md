@@ -31,3 +31,8 @@ cp libmyplugin.so model_repository/plugins
 ```
 docker run --gpus all --rm --shm-size=1g --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 -p8000:8000 -p8001:8001 -p8002:8002 -v$(pwd)/model_repository:/models -v$(pwd)/model_repository/plugins:/plugins --env LD_PRELOAD=/plugins/libmyplugin.so nvcr.io/nvidia/tritonserver:<xx.yy>-py3 tritonserver --model-repository=/models --strict-model-config=false --grpc-infer-allocation-pool-size=16 --log-verbose 1
 ```
+#
+```
+
+docker run -it -v/home/docker_data/yolov5-triton-tensorrt:/yolov5 --net=host nvcr.io/nvidia/tritonserver:21.08-py3-sdk /bin/bash
+```
