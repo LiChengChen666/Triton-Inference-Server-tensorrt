@@ -19,6 +19,7 @@ docker run --gpus all -it --rm -v$(pwd)/tensorrtx:/tensorrtx nvcr.io/nvidia/tens
 apt-get install libopencv-dev
 ```
 ## 部署到Triton Inference Server
+退出tensorrt容器
 ```
 mkdir -p model_repository/<你模型的名字>/1
 mkdir model_repository/plugins
