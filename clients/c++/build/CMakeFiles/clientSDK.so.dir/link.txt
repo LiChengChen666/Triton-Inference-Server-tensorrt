@@ -1,2 +1,0 @@
-/usr/bin/ar qc libclientSDK.so.a CMakeFiles/clientSDK.so.dir/clientclass.cpp.o
-/usr/bin/ranlib libclientSDK.so.a
