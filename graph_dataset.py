@@ -245,6 +245,8 @@ class GraphDataset(DGLDataset):
     
     def get_points(self, idxs, dp_idx):
         xx = []
+        tetra_cells = []
+        hexa_cells = []
         for idx in idxs:
             reader = self.readers[dp_idx]
             reader.SetStep(idx)
@@ -252,8 +254,37 @@ class GraphDataset(DGLDataset):
             output = reader.GetOutput()
             points = vtk_to_numpy(output.GetPoints().GetData())[None,...]
             xx.append(torch.tensor(points))
+            cells = output.GetCells()
+            cell_types = output.GetCellTypesArray()
+
+            for i in range(output.GetNumberOfCells()):
+                cell_type = cell_types.GetValue(i)
+                cell = output.GetCell(i)
+                point_ids = cell.GetPointIds()
+
+                if cell_type == vtk.VTK_TETRA:
+                    tetra_cells.append([point_ids.GetId(j) for j in range(4)])  # 四面体4个顶点
+                elif cell_type == vtk.VTK_HEXAHEDRON:
+                    hexa_cells.append([point_ids.GetId(j) for j in range(8)])  # 六面体8个顶点
+        tetra_cells = np.array(tetra_cells)
+        hexa_cells = np.array(hexa_cells)
+        def extract_edges_from_cells(cells, num_vertices):
+            """从单元格提取边，num_vertices 表示每个单元的顶点数量"""
+            edges = set()
+            for cell in cells:
+                for i in range(num_vertices):
+                    for j in range(i + 1, num_vertices):
+                        edges.add((cell[i], cell[j]))  # 无向边
+                        edges.add((cell[j], cell[i]))  # 另一方向的无向边
+            return edges
+        tetra_edges = extract_edges_from_cells(tetra_cells, 4)  # 四面体有4个顶点
+        hexa_edges = extract_edges_from_cells(hexa_cells, 8)   # 六面体有8个顶点
+
+        # 合并四面体和六面体的边
+        all_edges = np.array(list(tetra_edges | hexa_edges)).T
+        
         xx = torch.cat(xx,dim=0)
-        return xx
+        return xx[0], torch.tensor(all_edges)
 
     @staticmethod
     def add_edge_features(graph, pos):
