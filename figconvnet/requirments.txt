@@ -1,0 +1,4 @@
+torchinfo
+jaxtyping
+torch_scatter
+webdataset
